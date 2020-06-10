@@ -52,11 +52,13 @@ type Config struct {
 // StateDBConfig is a structure used to configure the state parameters for the ledger.
 type StateDBConfig struct {
 	// StateDatabase is the database to use for storing last known state.  The
-	// two supported options are "goleveldb" and "CouchDB".
+	// two supported options are "goleveldb" and "CouchDB" of "FlureeDB"
 	StateDatabase string
 	// CouchDB is the configuration for CouchDB.  It is used when StateDatabase
 	// is set to "CouchDB".
 	CouchDB *CouchDBConfig
+	// FlureeDb is the configuration for Fluree. It is used when StateDatabase is set to "FlureeDB"
+	FlureeDB *FlureeDBConfig
 }
 
 // CouchDBConfig is a structure used to configure a CouchInstance.
@@ -95,6 +97,17 @@ type CouchDBConfig struct {
 	// UserCacheSizeMBs needs to be a multiple of 32 MB. If it is not a multiple of 32 MB,
 	// the peer would round the size to the next multiple of 32 MB.
 	UserCacheSizeMBs int
+}
+
+// FlureeDBConfig is used for Fluree configuration
+type FlureeDBConfig struct {
+	// Address is the hostname:port of the FlureeDB database instance.
+	Address string
+	// TODO - not sure if this makes sense here. Network should probably map to a channel
+	// All world states (databases) on this channel have their own ledger on the same network
+	Network string
+	// RequestTimeout is the timeout used for FlureeDB operations.
+	RequestTimeout time.Duration
 }
 
 // PrivateDataConfig is a structure used to configure a private data storage provider.
